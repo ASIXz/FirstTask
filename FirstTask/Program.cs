@@ -51,7 +51,10 @@ namespace FirstTask
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Convertation XML to TXT!!!");
             SomeTxtToXMLSerializer.serializeAll("../../file.txt", "file.xml");
+            Console.WriteLine("Work is done. Press any key to exit...");
+            Console.ReadKey();
         }
     }
 }
