@@ -52,7 +52,20 @@ namespace FirstTask
         static void Main(string[] args)
         {
             Console.WriteLine("Convertation XML to TXT!!!");
-            SomeTxtToXMLSerializer.serializeAll("../../file.txt", "file.xml");
+            Console.WriteLine("input:\n\t'path'\t-\tTo change in-out files\n\t'exit'\t-\tTo exit\n\t other\t-\tTo continue whith default settings");
+            string userChoise = Console.ReadLine();
+            switch (userChoise)
+            {
+                case "exit":
+                    return;
+                case "path":
+                    Console.WriteLine("input please:\n<Input path>\n<Output path>");
+                    SomeTxtToXMLSerializer.serializeAll(Console.ReadLine(), Console.ReadLine());
+                    break;
+                default:
+                    SomeTxtToXMLSerializer.serializeAll("../../file.txt", "file.xml");
+                    break;
+            }
             Console.WriteLine("Work is done. Press any key to exit...");
             Console.ReadKey();
         }
