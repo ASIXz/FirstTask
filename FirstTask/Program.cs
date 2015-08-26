@@ -22,7 +22,25 @@ namespace FirstTask
     {
         public static void serializeAll(string inputFile, string outputFile)
         {
-            StreamReader input = new StreamReader(inputFile);
+            StreamReader input;
+            try
+            {
+                input = new StreamReader(inputFile);
+            }
+            catch(ArgumentException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ERROR\nUncorect path");
+                Console.ForegroundColor = ConsoleColor.White;
+                return;
+            }
+            catch(FileNotFoundException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ERROR\nInput file not found");
+                Console.ForegroundColor = ConsoleColor.White;
+                return;
+            }
             List<SomeDataClass> data = new List<SomeDataClass>();
             SomeDataClass newObject;
             String[] currentData;
@@ -30,19 +48,57 @@ namespace FirstTask
             while(!input.EndOfStream)
             {
                 currentData = input.ReadLine().Split(separator, StringSplitOptions.RemoveEmptyEntries);
-                newObject = new SomeDataClass();
+                if (currentData.Length == 5)
+                {
+                    newObject = new SomeDataClass();
 
-                newObject.firstName = currentData[0];
-                newObject.secondName = currentData[1];
-                newObject.car = currentData[2];
-                newObject.carNumber = Convert.ToInt32(currentData[3]);
-                newObject.oneMoreField = Convert.ToDouble(currentData[4].Replace('.',','));
-
-                data.Add(newObject);
+                    newObject.firstName = currentData[0];
+                    newObject.secondName = currentData[1];
+                    newObject.car = currentData[2];
+                    try
+                    {
+                        newObject.carNumber = Convert.ToInt32(currentData[3]);
+                        newObject.oneMoreField = Convert.ToDouble(currentData[4].Replace('.', ','));
+                    }
+                    catch (FormatException)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("ERROR\nUncorrect Data");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    data.Add(newObject);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("ERROR\nUncorrect input data!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
             }
-            StreamWriter output = new StreamWriter(outputFile);
+            StreamWriter output;
+            try
+            {
+                output = new StreamWriter(outputFile);
+            }
+            catch (ArgumentException)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ERROR\nUncorect output path");
+                Console.ForegroundColor = ConsoleColor.White;
+                input.Close();
+                return;
+            }
             XmlSerializer writer = new XmlSerializer(typeof(List<SomeDataClass>));
-            writer.Serialize(output, data);
+            try
+            {
+                writer.Serialize(output, data);
+            }
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("ERROR\nSerialization error!");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
             input.Close();
             output.Close();
         }
