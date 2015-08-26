@@ -20,6 +20,12 @@ namespace FirstTask
     }
     public static class SomeTxtToXMLSerializer
     {
+        public static void Error(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("ERROR\n"+message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
         public static void serializeAll(string inputFile, string outputFile)
         {
             StreamReader input;
@@ -29,16 +35,12 @@ namespace FirstTask
             }
             catch(ArgumentException)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("ERROR\nUncorect path");
-                Console.ForegroundColor = ConsoleColor.White;
+                Error("Uncorect path");
                 return;
             }
             catch(FileNotFoundException)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("ERROR\nInput file not found");
-                Console.ForegroundColor = ConsoleColor.White;
+                Error("Input file not found");
                 return;
             }
             List<SomeDataClass> data = new List<SomeDataClass>();
@@ -62,17 +64,13 @@ namespace FirstTask
                     }
                     catch (FormatException)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("ERROR\nUncorrect Data");
-                        Console.ForegroundColor = ConsoleColor.White;
+                        Error("Uncorrect Data");
                     }
                     data.Add(newObject);
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("ERROR\nUncorrect input data!");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Error("Uncorrect input data!");
                 }
             }
             StreamWriter output;
@@ -82,9 +80,7 @@ namespace FirstTask
             }
             catch (ArgumentException)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("ERROR\nUncorect output path");
-                Console.ForegroundColor = ConsoleColor.White;
+                Error("Uncorect output path");
                 input.Close();
                 return;
             }
@@ -95,9 +91,7 @@ namespace FirstTask
             }
             catch
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("ERROR\nSerialization error!");
-                Console.ForegroundColor = ConsoleColor.White;
+                Error("Serialization error!");
             }
             input.Close();
             output.Close();
